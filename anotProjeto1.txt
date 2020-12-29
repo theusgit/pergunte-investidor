@@ -1,0 +1,1062 @@
+Iniciar projeto
+npm init 
+mudar descrição e author
+
+Criar entreponit, arquivo principal
+
+Usar o EJS
+Motor de templates, desenha html. Redezenhar é fazer o html na tela
+
+Instalar express
+npm install express --save
+
+instalar ejs
+npm install ejs --save
+--------------------------------------
+Configurando e exibindo HTML com Ejs
+
+Abrindo rota
+const express = require("express");
+const app = express();
+
+app.set('view engine','ejs');//Dizendo ao express usar o ejs como view engine
+
+app.get("/",(req, res)=>{
+    res.render("index")
+});
+
+app.listen(8888,()=>{
+    console.log("Rodando");
+});
+
+Rodar com nodemon index.js
+
+
+Onde salvar arquivos html
+Criar uma pasta views e salvar todos os arquivos html dentro de views, isso é um padrão
+
+pasta views
+nome do arquivo index.ejs
+pode digitar html dentro, .ejs só muda a extensão 
+
+Como express vai desenhar o arquivo na tela?
+
+com res.render("index")//Assim o express identifica por padrão a pasta views e com render de renderizar ou desenhar ele mostra na tela o que está em "index"
+
+para renderizar um arquivo dentro de uma pasta
+estando dentro da pasta views
+res.render("principal/perfil");
+---------------------------------
+Exibir variáveis no html
+
+criar variaveis dentro de app.get
+var nome =...
+var linguagem = ...
+
+como passar as var para o html
+
+no método rende colocar outro parametro com colchetes, passar lista de todos os dados
+
+res.render("index",{nome: nome, empresa: oi}); também é possivel criar variaveis ai dentro
+
+
+como exibir no ejs
+lá no arquivo ejs
+
+
+<%= nome %>
+<%= lang %>
+<%= empresa %>
+//o ejs exibe valores dessa forma
+tag ejs que exibe valor de uma var 
+
+posso colocar html por fora do ejs
+
+<p>Nome: <%= nome %></p>
+h1
+h3
+
+é possivel pegar as informações que o user digitar com
+var nome = req.params.nome;
+-------------------------------------
+Estruturas condicionais ejs
+Só utilizar = quando for pegar valor de var
+
+no caso vamos pegar uma expressão um if
+var exibirMsg = true;
+
+
+<% if(msg==true){ 
+%><h3>Isso é uma msg de erro</h3><%}else{%>
+<h3>Opa</h3>
+<%}
+%>
+}
+--------------------------------------
+Estruturas de repetição com ejs
+
+For witch
+
+
+criar var produtos = [
+	{nome: "Doritos",preco:3.14},
+	{nome: "Coca-cola",preco:5},
+	{nome: "leite",preco:1.45},
+]
+
+render{
+produtos: produtos
+}
+
+
+Para trabalhar com for witch
+todo array que criar já vai vir com forEach()
+<% produtos.forEach(function(produto){%> <hr>
+<h4><%= produto.nome %></h4>
+<h4><%= produto.preco %></h4>
+<%})%>
+
+forEach para lsitagem de dados
+--------------------------------------
+Arquivos estáticos são arquivos que não são processados no back end
+Simples
+Uma linha de config
+abaixo da view engine
+
+app.use(express.static('public'));
+//use dizendo que quero utilizar alguma coisa ()nome da pasta que vai ficar os arquivos estáticos
+
+Criar arquivo css
+colocar o link rel no html
+ <link rel="stylesheet" href="/css/style.css">
+
+não precisa colocar a pasta public pois o express por padrão já encontra só com css
+-------------------------------------
+Bootstrap
+Facilitar html css
+Interfaces bonitas e simples
+
+
+Baixar bootstrap
+primeira opção compiled
+extrair arquivos dentro da pasta public do projeto
+
+importar css e bootstrap
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+.min
+
+importar js que só funciona com duas dependencias
+jquery e popper
+copiar segundo bloco da pag do bootstrap
+
+carregar script bootstrap
+<script src="/js/bootstrap.min.js"></script>
+------------------------------------
+Criando formularios de perguntas
+
+criar rota perguntar que vai renderizar html
+criar arquivo perguntar.ejs
+copiar tudo de index
+na rota colocar a resposta res.render("perguntar")
+
+em perguntar.ejs fazer o form
+
+    <div class=container>
+        <h3>Realizar pergunta</h3>
+        <form>
+            <label>Título</label>
+            <input type=text placeholder="Título" class="form-control">
+            <label>Descrição</label>
+            <textarea placeholder="Descreva sua pargunta aqui" class="form-control"></textarea>
+
+        </form>
+//label é um espaço para algo
+//o input é do tipo text com nome de Título e p class="form-control" deixa o formulário bonito
+
+usar um button
+<button class="btn btn-success">Perguntar</button>
+a classe btn e outra classe btn-success que é uma variação do bootstrap
+--------------------------------------
+Card no formulário
+
+criar div com classe card
+detro dessa div criar outras duas divs
+card-header
+aqui vai o cabeçalho
+card-body
+aqui vai o corpo/form 
+--------------------------------------
+Css customizado com bootstrap
+
+Quando vai trabalhar com css e bootstrap
+carregar arquivo css e depois o bootstrap
+mudar cor do background 
+
+SHIFT + ALT + F como falado, para identar 
+------------------------------------
+Finalizando front end
+bootstrap barra por padrão
+
+dentro de body
+nav class
+ <nav class="navbar navbar-light bg-success">
+        <a class="navbar-brand" href="/">
+        <img src="/img/logoc.png">
+        </a>
+
+    </nav><br>
+
+// o primeiro navbar-light é de fontes e o segundo nbg-success é de fundo
+
+vh corresponde a porcentagem da tela 5 por cento da tela 
+quero adicionar uma margem de 5 por cento em ralação a tela
+-------------------------------------
+Reutilizando html com partials
+transformar em um partial
+criar pasta dentro da pasta views
+nome: partials
+uma partial para cada parte
+
+header.ejs
+colar html header
+
+navbar.ejs
+colar navbar
+
+footer.ejs
+scripts bootstrap junto com /html
+
+
+como importar partial dentro 
+<%- include ('partials/header.ejs') %>
+tag de inclusão nome da pasta e nome do arquivo
+
+<%- include ('partials/footer.ejs') %>
+
+
+antes do container
+<%- include ('partials/navbar.ejs') %>
+
+fazer o mesmo na pagina inicial
+--------------------------------------
+Envio de form 
+Primeira coisa qula método que vai trabalhar
+
+existem dois métodos
+get e post
+
+get
+quando os daods desse form forem enviados serão enviados com os query params
+problemas: url feia e dados expostos sem segurança
+
+post 
+os dados não são passados, ficam escondidos
+
+colocar em form 
+form method="POST"
+
+criar rota para RECEBER dados do form
+app.get("/salvarpergunta")
+
+rotas do tipo post geralmente para receber dados do form
+
+precisa definir para qual rota o form vai apontar
+lá em method="POST" colocar action="/salvarpergunta"
+
+Como pegar os dados enviados do fomr
+quais dados?
+titulo e descrição
+
+como fazer?
+
+para isso é preciso instalar uma biblioteca 
+npm install body-parser --save
+
+importar body-parser
+const bodyParser = require("body-parser");
+
+bodyParser traduz os dados enviados pelo form em uma estrutura JS para usar
+
+como config
+
+app.use(bodyParser.urlencoded({extended: false}));
+
+Comando que permite que a pessoa envie dados e o bodyParser traduz, decodifica dados enviados
+
+app.use(bodyParser.json());
+permite ler dados de form enviados via json, utilizar com api
+
+Os campos tem nome para facilitar a identificação
+colocar nome no input 
+name="titulo"
+name="descricao"
+
+pegar dados do form
+no app.post
+var titulo=req.body.titulo;
+var descricao=req.body.descricao;
+
+objeto body disponibilizado
+-------------------------------------
+Sequelize
+biblioteca de manipulação de banco de dados através de node
+Código js para alterar, excluir incluir 
+
+npm install --save sequelize
+
+para trabalhar sequelize junto com mysql
+npm install --save mysql2
+--------------------------------------
+Como conectar sequeliza com mysql
+
+criar pasta database
+criar módulo(arquivo) database.js
+
+importar o módulo
+const Sequelize = require('sequelize');
+
+após isso construi conexão
+const connection = new Sequelize();
+
+criar banco de dados no work
+abrir work
+criar novo banco
+new schema
+nome do banco apply e apply novamente
+
+no módulo database.js ir em Sequelize() e aqui dentro colocar as informações de conexão do bando
+new Sequelize('pergunteinvestidor','root','M4theus$$');
+
+apos isso definir servidor e o tipo de banco
+('pergunteinvestidor','root','M4theus$$',{
+    host:'localhost',
+    dialect:'mysql'
+});
+
+podemos exportar a conexão para utilizar em outros arquivos:
+module.exports=connection;
+
+
+testar conexão
+carregar conexão
+no módulo index.js
+const connection = require("./database/database");
+
+chamar conexão
+connection.authenticate()
+.then(()=>{
+console.log("Conexão feita com sucesso!")
+})
+.catch((msgErro)=>{
+console.log=(msgErro);
+})
+
+
+//tenta autenticar, ou consege ou dá erro//se ele conseguir se conectar chamar função then
+//se algum erro acontecer ele chama a função cath que tem um tratamento de erro
+//estrutura promisses
+
+pode aparecer um erro
+cliente não suporta protocolo
+
+Resulvendo erro
+o mysql por mais de 25 anos utilizou o mesmo protocolo
+protocolo permite user logar ou não
+agora na versão recente mudou o protocolo
+A biblioteca mysql2 não se atualizou 
+Para resolver tem dois caminhos
+
+versão 5.7 do mysql
+
+Caminho da aula se não resolver voltar para 5.7
+
+abrir mysql work
+Clicar em +sql no canto superiro esquerdo
+digitar código
+ALTER USER 'root@''localhost' IDENTIFIED WITH mysql_native_password BY 'senha do mysql'
+Esse código muda maneira de autenticação, Senha plana.
+clicar no raio que ele vai executar
+-------------------------------------
+Gerando tabela com model  
+Através do sequelize é possivel criar tabelas com o JS
+
+Conceito de model
+Representa a sua tabela, estrutura de dados que representa a sua tabela
+
+primeira tabela
+Tabela de pergunta
+title
+description
+faconstzendo isso através do js é feito lá do db
+
+criar dentro de database
+Pergunta.js
+Boa pratica com letra maiuscula para identificar que é um model
+
+importar sequelize
+const Sequelize = require('sequelize');
+const connection = require("./database");
+
+definir model
+const Pergunta = connection.define('pergunta',{
+titulo:{
+  type:Sequelize.STRING,
+  allowNULL: false	
+},
+descricao:{
+  type:Sequelize.TEXT,
+  allowNull: false
+}
+});
+
+Pergunta.sync({force:false}).then(()=>{
+console.log("Tabela criada")
+});
+
+//nome da tabela e depois , {} para definir campos
+//type é o tipo, aloowNull: false quer dizer que o campo não vai ficar vazio, não pode ficar vazio
+//a diferença de STRING para TEXT é que String recebe textos pequenos já o TEXT grande
+//Pergunta.sync({force.false}) sincroniza caso a tabela não exista ele cria e se ela já existe o false não força para ela existir
+//o then executa caso tudo dê certo
+
+Para o módulo ser executado preccisa chamar lá em index
+const perguntaModel=require("./database/Pergunta")
+vai ser executado pois esta dentro da pasta
+
+
+Abrir work
+e confirmar lá se criou
+--------------------------------------
+
+Salvando perguntas no banco de dados
+Slavar na tabela de perguntas
+para manipular tabelas precisa importar
+precisa de module.exports=Pergunta; 
+
+com esse module em mãos ir nos dados de form que é o app.post("/salvarpergunta")
+
+em baixo da var description
+Pergunta.crate()
+//método responsavel por salvar uma pergunta no bd
+//tenho que pegar o model e através dele chamar o crate que é igual a INSERT INTO...
+
+Pergunta.create({
+titulo: titulo,
+descricao: descricao
+}).then(()=>{
+   res.redirect("/");
+}
+//primeio recebo os dados e salvo nas variaveis, faço um insert na tabela perguntas e caso aconteça com sucesso o user é redirecionado
+
+Para checar abrir o work
+ir na tabela e com btn direito select rows
+--------------------------------------
+Buscando perguntas no bd
+
+Para listar temos que ir até a rota da pag principal 
+Perguntas estão na tabela perguntas
+para manipular elas trabalhar com o model pergunta
+
+em app.get("/")
+Pergunta.findALL().then(perguntas =>{console.log(perguntas)})
+
+//findALL equivalente a selecionar no bd
+//then se der certo salvar as informações na var pergunta
+
+//vai trazer um monte de info desnecessarias
+//raw:true traz apenas os dados listados
+
+Pergunta.findALL(raw:true).then(perguntas =>{console.log(perguntas)})
+
+
+Para enviar no frontEnd
+
+pegar o res.render("index"); 
+colocar dentro do then e abrir json passando as perguntar
+
+//pesquisando pelas perguntas
+//quando a pesquisa é feita e mandada para a var
+//var manda para o res render
+-------------------------------------
+Listando perguntas no frontend
+
+<div class=container>
+
+        <% perguntas.forEach(pergunta =>{ %>
+            <p><%= pergunta.titulo %></p>
+            <p><%= pergunta.descricao %></p>
+        <% }) %>
+
+    </div>
+
+Organizando melhor com card
+
+
+<div class="container">
+        <h1>Faça sua pergunta</h1>
+        <hr>
+        <a href="/perguntar" class="btn btn-primary">Perguntar</a><hr>
+        <% perguntas.forEach(pergunta =>{ %>
+            <div class="card">
+                <div class="card-body">
+                    <h3><%= pergunta.titulo %></h3>
+                </div>
+                <div class=card-footer>
+                    <button class="btn btn-primary">Responder</button>
+                </div>
+            </div><br>
+        <% }) %>
+
+    </div>
+--------------------------------------
+Ordenação com sequelize
+
+Exibir da mais recente a ultima
+ordenar pelo id
+
+lá em raw:true, order:[
+['id','DESC']//crescente ASC
+]
+isso diz ao programa que a ordem será decrecente
+primeiro parametro é o id e o segundo é a ordem
+--------------------------------------
+Busca condicional com sequelize
+
+
+criar uma nova rota
+aap.get("/pergunta/:id",(req,res)=>{
+  var id=req.params.id;
+  Pergunta.findOnde({
+  where: {id:id}
+}).then(pergunta =>{
+  if(pergunta != undefined){
+}else{
+}
+})
+});
+//pegar o id através do parametro
+//buscar no banco de dados pelo id que o usuário digitou
+
+//model representa a tabela perguntas, tudo que quiser fazer com tabela tem que chamar o model
+
+//findOne() busca um dado com uma condição, buscar pergunta 3
+
+//where: {id:id} buscar no bd id igual id.
+
+//then retorna pergunta
+
+//tem que verificar se a pergunta é diferente de undefined !=
+
+//se ele achar a pergunta vai ser diferente de undefined(foi achada)
+
+//Criar uma nova view na pasta views pergunta.ejs
+colocar um simples h1 com uma frase
+voltar na rota
+if(pergunta != undefined){
+            res.render("pergunta");
+        }else{
+            res.redirect("/")
+        }
+    })
+});
+//se encontrar a pergunta vai abrir res.render se não achar vai ser redirecionado
+--------------------------------------
+Front end de uma pagina de pergunta
+
+no pergunta.ejs
+incluir os includes de header, nav e footer e um container
+
+para as peruntas serem renderizadas
+res.render("pergunta",{
+  pergunta:pergunta
+})
+//no index.js
+//dentro de container
+<hr>
+    <h1><%= pergunta.titulo %></h1>
+    <p><%= pergunta.descricao %></p>
+-------------------------------------
+Perguntas com links dinâmicos
+lá em index.ejs que é a pagina onde estão as perguntas
+
+//envolver o button com uma tag a href
+<a href="/pergunta/<%= pergunta.id %>"><button class="btn btn-primary">Responder</button></a>
+-------------------------------------
+Model de resposta
+
+Criar um model de resposta 
+em database criar um arquivo com nome de Resposta.js com maiuscula pq é um modulo
+dentro dele importar o Sequelize e as configurações do banco
+
+const Sequelize = require("Sequelize");
+const connection = require("./database");
+
+//criar um mdel de resposta
+//chamar conexão e o nome da tabela que é respostas
+//definir campos e tipos de campos
+//campo corpo, parte de texto da resposta tipo TEXT texto grande allowNull: false(nunca vazio)
+
+//Campo de pergunta, toda resposta corresponde a uma pergunta
+//criar campo de perguntaId, guarda o id da pergunta que essa resposta esta respondendo
+//vai ser do tipo inteiro porque o id é inteiro e allowNull
+
+//sincronizar model com banco de dados
+//force:false não recriar tabela caso não exista
+
+//module.exports=respostas: para poder usar fora
+
+//ir no modulo principal e importar resposta
+
+//sair do nodemon e rodar novamente
+
+const Sequelize = require("Sequelize");
+const connection = require("./database");
+
+const Resposta = connection.define("respostas",{
+    corpo: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    perguntaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+});
+
+Resposta.sync({force:false});
+
+module.exports= Resposta;
+
+const Resposta = require("./database/Resposta");
+--------------------------------------
+Formulário de resposta
+
+//será cosntruido dentro da pagina d epergunta
+//pergunta.ejs
+
+//abaixo das variaveis de titulo e descrição
+
+<hr>
+    <form><br>
+        <h3>Responder</h3>
+        <textarea placeholder="Digite sua resposta" class="form-control" name="corpo" ></textarea><br>
+        <button type="submit" class = "btn btn-success">Enviar resposta</button>
+    </form>
+--------------------------------------
+Campo de form com valor dinâmico
+Qual pergunta esta respondendo
+
+//fazer um input do tipo text que sera escondido, o nome vai ser pergunta
+//dentro desse campo vai ser carregado o id da pergunta que sera respondida
+//value vai ser dinâmico
+//value vai exibir o id pergunta.id
+//esconder o input
+//type hidden que significa escondido
+//fazer isso em pergunta.ejs abaixo do textarea
+
+
+<input type="hidden" name="pergunta" value="<%= pergunta.id %>">
+-------------------------------------
+Respondendo perguntas
+Cadastrar respostas
+
+index.js arquivo principal
+criar nova rota do tipo post
+o formulario sera method=POST
+dizer para onde ele aponta com action="/responder" responder
+rota se chamará responder
+var copor recebe resposta conteudo que vem da textarea
+var pergunta id recebe a requisição da do campo pergunta
+
+//chamar model
+Resposta.crate()
+//corpo recebe o que vem do form
+//pergunta também
+//then vai ser chamado com o processo de criação for finalizado e o user sera redirecionado para a pagina pergunta
+
+app.post("/responder",(req,res)=>{
+    var corpo = req.body.corpo;
+    var perguntaId = req.body.pergunta;
+    Resposta.create({
+        corpo:corpo,
+        perguntaId:perguntaId
+    }).then(()=>{
+        res.redirect("/pergunta/"+perguntaId);
+    });
+});
+--------------------------------------
+Exibindo na pag de perguntas  as respostas
+no arquivo principal em render antes de render dentro do if pergunta
+
+chamar model de resposta findAll para achar todas as respostass que fazem parte dessa pergunta com where, pesquisando respostas que tenham o id igual ao id de perguntas
+
+se achar com then mandar res render para dentro de then
+
+Resposta.findAll({
+                where:{perguntaId:pergunta.id}
+            }).then(respostas =>{
+                res.render("pergunta",{
+                    pergunta:pergunta,
+                    respostas: respostas
+                });
+            });
+
+
+
+podemos exibir em pergunta.ejs
+forEach vai exibir todas as respostas do array
+//exibir as respostas mais recentes primeiro com order:
+Resposta.findAll({
+                where:{perguntaId:pergunta.id},
+                order:[['id','DESC']]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

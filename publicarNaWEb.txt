@@ -1,0 +1,4 @@
+Digital Ocean
+
+VPS Servidor virtual privado
+é um computador alugado com total controle dele, instalar, acessar.
